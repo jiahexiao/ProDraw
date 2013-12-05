@@ -1,0 +1,35 @@
+cleaved_initiator_methionine", 
+
+polypeptide_region
+polypeptide_domain
+
+binding: metal_contact, binding_motif
+
+secondary: alpha_helix, turn, beta_strand, coiled_coil
+
+domain: transmembrane/ extramembrane
+
+variant_site : natural/ mutated/ alternate_sequence
+
+residues: disulfide cross linked, non_terminal_residue, catalytic_residue, glycocslated, cross linked, lipoconjugated, natural non-standard encoded residue
+
+region: polypeptide/ compositionally_biased
+
+peptide: active, transit,signal,  
+
+region,
+
+polypeptide_motif,
+
+post_translational_modification
+
+
+sequence_uncertainty
+sequence_conflict
+
+//propeptide
+
+polypeptide_repeat
+
+
+
