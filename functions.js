@@ -379,7 +379,7 @@ $('#transmemCheckbox').click(function () {
 	}
     else {
     	if (this.checked) {
-    		$("#right").append('<span class="alert"> There is no transmembrane domain in this query.</span></br>');
+    		$("#viewInfo").append('<span class="alert"> There is no transmembrane domain in this query.</span></br>');
     	}
     	
     }
@@ -392,7 +392,7 @@ $('#extramemCheckbox').click(function () {
 	}
     else {
     	if (this.checked) {
-    		$("#right").append('<span class="alert"> There is no extramembrane domain in this query.</span></br>');
+    		$("#viewInfo").append('<span class="alert"> There is no extramembrane domain in this query.</span></br>');
     	}
     }    
 });
@@ -404,7 +404,7 @@ $('#intramemCheckbox').click(function () {
 	}
     else {
     	if (this.checked) {
-    		$("#right").append('<span class="alert"> There is no intramembrane domain in this query.</span></br>');
+    		$("#viewInfo").append('<span class="alert"> There is no intramembrane domain in this query.</span></br>');
     	}
     }
 });
@@ -417,7 +417,7 @@ $('#secondaryCheckbox').click(function() {
 	}
     else {
     	if (this.checked) {
-    		$("#right").append('<span class="alert"> There is no secondary structure in this query.</span></br>');
+    		$("#viewInfo").append('<span class="alert"> There is no secondary structure in this query.</span></br>');
     	}
     }
 });
@@ -429,7 +429,7 @@ $('#peptideCheckbox').click(function() {
 	}
     else {
     	if (this.checked) {
-	    	$("#right").append('<span class="alert"> There is no special peptide structure in this query.</span></br>');
+	    	$("#viewInfo").append('<span class="alert"> There is no special peptide structure in this query.</span></br>');
     	}
     }
 });
@@ -445,7 +445,7 @@ $('#variantCheckbox').click(function() {
 	}
     else {
     	if (this.checked) {
-	    	$("#right").append('<span class="alert"> There is no variant site in this query.</span></br>');
+	    	$("#viewInfo").append('<span class="alert"> There is no variant site in this query.</span></br>');
     	}
     }
 });
@@ -461,7 +461,7 @@ $('#bindingCheckbox').click(function() {
 	}
     else {
     	if (this.checked) {
-	    	$("#right").append('<span class="alert"> There is no binding site in this query.</span></br>');
+	    	$("#viewInfo").append('<span class="alert"> There is no binding site in this query.</span></br>');
     	}
     }
 });
@@ -477,7 +477,7 @@ $('#residueCheckbox').click(function() {
 	}
     else {
     	if (this.checked) {
-	    	$("#right").append('<span class="alert"> There is no special residue in this query.</span></br>');
+	    	$("#viewInfo").append('<span class="alert"> There is no special residue in this query.</span></br>');
     	}
     }
 });
@@ -573,7 +573,7 @@ function endsWith(str, suffix) {
 }
 
 function displayInfoOnRight (array) {
-	document.getElementById("right").innerHTML = "";
+	document.getElementById("viewInfo").innerHTML = "";
 	for (var i = 0; i < array.length; i++) {
 		var infoNote = "";
 		if (array[i].info[0]) {
@@ -583,7 +583,7 @@ function displayInfoOnRight (array) {
 					+array[i].iStart+" --> " + array[i].iEnd + "] " + infoNote + " </span></br>";
 
 		var thisId = array[i].lineId + "info";
-		$( "#right" ).append( span );
+		$( "#viewInfo" ).append( span );
 		$("#" + thisId).mouseover(function () {
 			$(this).css("color", "red");
 			var thisid = $(this).attr("id");
