@@ -1,3 +1,4 @@
+
 var itemsArray = new Array();
 var domainArray = new Array();
 var regionArray = new Array();
