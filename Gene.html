@@ -10,10 +10,11 @@
     <div class="jumbotron" >
       <div class="container" >
         <h2>Welcome to Interactive Protein Diagram</h2>
-        <p id = "intro">This is a program used to dynamically show the components of a queried protein. User should provide a UniProt Identifier, a gff2 file URL, </br>or upload a gff2 from local computer (still need to implement). </p>
+        <p id = "intro">This is a program used to dynamically show the components of a queried protein. User should provide a UniProt Identifier, a gff2 file URL, </br>or upload a gff2 from local computer (still in implementing). </p>
         <p><a class="btn btn-primary btn-lg" role="button">Learn more &raquo;</a></p>
       </div>
     </div>
+<div id="upper">
 <div id = "search_box" class="navbar-form pull-left">
 	UniProt Identifier: 
 	<input type="text" id="identifier" class="span2" maxlength="6" placeholder="P09488">
@@ -30,9 +31,13 @@
 <svg id="diagram" xmlns="http://www.w3.org/2000/svg" version="1.1" height = "150" width = "800" viewBox = "0 0 800 150">
 
 	<rect x="0" y="55" width="800" height="40" class="viewbox"/>
-
 </svg>
+<button id="exportSVG" class="btn" onclick="viewSVG()"> View SVG </button>
+
+<button id="exportGFF" class="btn" onclick="downloadGff('test.gff')"> Export .gff2 File </button> </br>
+
 </div> <!-- endo f svg -->
+</div> <!-- End of Upper -->
 
 <div id="displayOption">
 <div id="left" class="controls">
@@ -117,7 +122,8 @@
 
 </div> <!-- end of addForm -->
 </div> <!-- end of displayOption -->
-<div class="endDiv"></div>
+<div class="endDiv">
+</div>
 
 </body>
 <script src="jquery-1.10.2.js"> </script>

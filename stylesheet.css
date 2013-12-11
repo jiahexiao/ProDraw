@@ -13,10 +13,20 @@
 	fill: white;
 }
 
-#svg {
+.ruler {
+	stroke:black;
+	stroke-width: 2;
+	fill: black;
+}
+
+#upper {
 	font-family: sans-serif;
 	background-color: #eeeeee;
 	padding: 20px;
+}
+
+#svg {
+	margin: 20px 20px 20px 20px;
 }
 
 .coordinate{
@@ -133,6 +143,8 @@
 .endDiv {
 	clear: both;
 }
+
+
 
 
 

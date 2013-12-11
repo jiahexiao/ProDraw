@@ -209,7 +209,7 @@ function drawCoordinate(start, end) {
 		var coord = makeSVGText('text', {x: x, y: textY, "class": "coordinate"}, c);
 		document.getElementById('diagram').appendChild(coord);	
 	}
-	var path = makeSVG('path', {"class": "viebox", d: pathD});
+	var path = makeSVG('path', {"class": "ruler", d: pathD});
 	document.getElementById('diagram').appendChild(path);
 }
 
@@ -546,6 +546,50 @@ function drawItem(item) {
 	}
 }
 
+/******************************************************************************************
+Export SVG/Gff                                                                            *
+*******************************************************************************************/
+
+function viewSVG(){
+	var svg = document.getElementById("diagram");
+	var svg_xml = (new XMLSerializer).serializeToString(svg);
+	var myWindow = window.open('', '_blank');
+	myWindow.document.writeln("<?xml version=\"1.0\" standalone=\"no\"?>");
+	myWindow.document.writeln("<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">");
+    myWindow.document.writeln("<!-- " + identifier + " SVG Diagram -->");
+    myWindow.document.writeln("<title> " + identifier + " SVG diagram </title>");
+    myWindow.document.writeln("<link rel=\"stylesheet\" type=\"text/css\" href=\"stylesheet.css\">");
+	myWindow.document.writeln("");
+	myWindow.document.writeln(svg_xml);
+}
+
+function downloadGff(filename) {
+	var text = generateGff();
+    var pom = document.createElement('a');
+    pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    pom.setAttribute('download', filename);
+    pom.click();
+}
+
+function generateGff() {
+	var idLine = "##sequence-retion " + identifier + " " + start + " " + end; 
+	var gffArray = 
+   ['##gff-version 2',
+    '##Type Protein',
+    '',
+    idLine
+   ];
+   for (var i = 0; i < itemsArray.length; i++) {
+   		var itemsString = identifier + "\tUniProtKB" + "\t"+itemsArray[i].type + "\t" + 
+   							itemsArray[i].iStart + "\t" + itemsArray[i].iEnd + "\t.\t.\t" + itemsArray[i].info.toString();
+   		gffArray.push(itemsString);
+   }
+   return gffArray.join("\n");
+
+}
+
+
+//$("#exportSVG").click(viewSVG());
 
 
 /******************************************************************************************
