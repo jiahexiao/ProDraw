@@ -1,3 +1,9 @@
+//#######################
+//Add region not applied
+//Didnt pushed into subArray
+//
+
+//#
 var itemsArray = new Array();
 var domainArray = new Array();
 var regionArray = new Array();
@@ -112,7 +118,7 @@ function loadGff(result) {
 				var infoItem = {
 					id: j,
 					type: $.trim(infoItemArray[j]).split(" ")[0],
-					content: $.trim(infoItemArray[j]).split("\"")[1],
+					content: $.trim(infoItemArray[j]).split("\"")[1]
 				};
 				infoArray.push(infoItem);
 			}
@@ -123,7 +129,8 @@ function loadGff(result) {
 			type: line[i].split("\t")[2],
 			iStart: line[i].split("\t")[3],
 			iEnd: line[i].split("\t")[4],
-			info: infoArray
+			info: infoArray,
+			other: false
 		};
 		itemsArray.push(item);
 
@@ -168,9 +175,13 @@ function loadGff(result) {
 			peptideArray.push(item);
 		}
 		else {
+			item.other = true;
 			others.push(item);
+
 		}
 	}
+
+
 }
 
 function loadLeftUpperCheckList(array) {
@@ -262,42 +273,42 @@ function drawRegion(array) {
 //		var mouseover = "displayRegionInfo(event,'"+"region"+i+"', true)";
 //		var mouseout = "displayRegionInfo(event,'"+"region"+i+"', false)";
 		if (thisItem.type == "polypeptide_region") {
-			var region_y = coord_y+3;
+			var region_y = coord_y+65;
 			var region_h = svgHeight - 6;
 			var region = makeSVG('rect', {x: regionStart, y: region_y, width:regionWidth, height:region_h, id: svgId, "display" :"none", fill:"red", "class":"region"});
 			document.getElementById('diagram').appendChild(region);
 		}
 
 		if (thisItem.type == "transmembrane") {
-			var region_y = coord_y+3;
+			var region_y = coord_y+65;
 			var region_h = svgHeight - 6;
 			var region = makeSVG('rect', {x: regionStart, y: region_y, width:regionWidth, height:region_h, id: svgId, "display" :"none", fill:"red", "class":"transmembrane"});
 			document.getElementById('diagram').appendChild(region);
 		}
 
 		if (thisItem.type == "extramembrane") {
-			var region_y = coord_y+3;
+			var region_y = coord_y+65;
 			var region_h = svgHeight - 6;
 			var region = makeSVG('rect', {x: regionStart, y: region_y, width:regionWidth, height:region_h, id: svgId, "display" :"none", fill:"red", "class":"extramembrane"});
 			document.getElementById('diagram').appendChild(region);
 		}
 
 		if (thisItem.type == "intramembrane") {
-			var region_y = coord_y+3;
+			var region_y = coord_y+65;
 			var region_h = svgHeight - 6;
 			var region = makeSVG('rect', {x: regionStart, y: region_y, width:regionWidth, height:region_h, id: svgId, "display" :"none", fill:"red", "class":"intramembrane"});
 			document.getElementById('diagram').appendChild(region);
 		}
 
 		if (thisItem.type == "alpha_helix" || thisItem.type == "beta_strand" || thisItem.type == "turn" || thisItem.type == "coiled_coil") {
-			var region_y = coord_y+3;
+			var region_y = coord_y+120;
 			var region_h = svgHeight - 6;
 			var region = makeSVG('rect', {x: regionStart, y: region_y, width:regionWidth, height:region_h, id: svgId, "display" :"none", fill:"red", "class":"secondaryStructure"});
 			document.getElementById('diagram').appendChild(region);
 		}
 
 		if (endsWith(thisItem.type, "_peptide")) {
-			var region_y = coord_y+3;
+			var region_y = coord_y+65;
 			var region_h = svgHeight - 6;
 			var region = makeSVG('rect', {x: regionStart, y: region_y, width:regionWidth, height:region_h, id: svgId, "display" :"none", fill:"red", "class":"peptide"});
 			document.getElementById('diagram').appendChild(region);
@@ -329,7 +340,7 @@ function drawSite (array) {
 	for (var i = 0; i < array.length; i++) {
 		var thisItem = array[i];
 		var starLocation = thisItem.iStart*(svgWidth/end);
-		var circle_y = svgBoxHeight/2+5;
+		var circle_y = svgBoxHeight/2+5 + 30;
 		var text_y = circle_y+5;
 		var svgId = thisItem.lineId+"svg";
 		var textId = thisItem.lineId+ "text";
@@ -370,7 +381,6 @@ function displayRegionInfo(event, regionTextId, show){
 /******************************************************************************************
 Checkbox functions                                                                        *
 *******************************************************************************************/
-
 $('#transmemCheckbox').click(function () {
 	if ($(".transmembrane").length != 0){
 		$(".transmembrane").toggle(this.checked);
@@ -506,6 +516,7 @@ $("#add").click(function(){
 		iStart: addStart,
 		iEnd: addEnd,
 		info: addInfoArray,
+		other: false
 	};
 	console.log(addItem);
 	itemsArray.push(addItem);
@@ -579,13 +590,26 @@ function generateGff() {
     '',
     idLine
    ];
-   for (var i = 0; i < itemsArray.length; i++) {
-   		var itemsString = identifier + "\tUniProtKB" + "\t"+itemsArray[i].type + "\t" + 
-   							itemsArray[i].iStart + "\t" + itemsArray[i].iEnd + "\t.\t.\t" + itemsArray[i].info.toString();
-   		gffArray.push(itemsString);
-   }
+   pushToGffArray(itemsArray, gffArray);
+
    return gffArray.join("\n");
 
+}
+
+function pushToGffArray(array, gffArray) {
+	for (var i = 0; i < array.length; i++) {
+		if (!array[i].other) {
+			if (array[i].info.length != 0){
+				var itemsString = identifier + "\tUniProtKB" + "\t"+array[i].type + "\t" + 
+   				array[i].iStart + "\t" + array[i].iEnd + "\t.\t.\t" + array[i].info[0].type+ " \"" + array[i].info[0].content + "\"";
+			}
+			else {
+				var itemsString = identifier + "\tUniProtKB" + "\t"+array[i].type + "\t" + 
+   				array[i].iStart + "\t" + array[i].iEnd + "\t.\t.\t";
+			}
+			gffArray.push(itemsString);
+		}
+	}
 }
 
 
