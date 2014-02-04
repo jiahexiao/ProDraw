@@ -34,15 +34,44 @@ var addEnd;
 var addNote;
 var itemsNum;
 
+document.getElementById('localfile').addEventListener('change', handleFileSelect, false);
 
-$("#draw").click(function() {
-	identifier = $("#identifier").val();
-	url = $("#URL").val();
-	if (url == ""){
-		url = "http://websitescraper.heroku.com/?url=http://www.ebi.ac.uk/Tools/dbfetch/dbfetch/uniprotkb/"+identifier+"/gff2";
-	}
-	urlpass = url + "?s=RIL.BO&callback=?";
-	$.getJSON(urlpass, function(result) {
+$(document).ready(function() {
+	$('#draw').click(function() {
+		identifier = $("#identifier").val();
+		url = $("#URL").val();
+		if (url == ""){
+			url = "http://websitescraper.heroku.com/?url=http://www.ebi.ac.uk/Tools/dbfetch/dbfetch/uniprotkb/"+identifier+"/gff2";
+		}
+		urlpass = url + "?s=RIL.BO&callback=?";
+		$.getJSON(urlpass, function(result) {
+			process(result);
+		});
+	});
+
+	$("#exportGFF").click(function() {
+		console.log("hello");
+		downloadGff(identifier+'Export.gff');
+	});
+
+	$("#exportSVG").click(function() {
+		viewSVG();
+	});
+});
+// $(document).on('click', '#draw', function() {
+// 	identifier = $("#identifier").val();
+// 	url = $("#URL").val();
+// 	if (url == ""){
+// 		url = "http://websitescraper.heroku.com/?url=http://www.ebi.ac.uk/Tools/dbfetch/dbfetch/uniprotkb/"+identifier+"/gff2";
+// 	}
+// 	urlpass = url + "?s=RIL.BO&callback=?";
+// 	$.getJSON(urlpass, function(result) {
+// 		process(result);
+// 	});
+// });
+
+
+function process(result) {
 		loadGff(result);
 		drawCoordinate(start, end);
 		drawDomain(domainArray);
@@ -90,10 +119,9 @@ $("#draw").click(function() {
 			$(".domainText").toggle(!this.checked);
 		});
 		//End of load hide domain text
-	});
-});
-
+}
 function loadGff(result) {
+	console.log("hello from loadGff");
     line = result.split("\n");
 
     var startRead = 0;
@@ -133,52 +161,8 @@ function loadGff(result) {
 			other: false
 		};
 		itemsArray.push(item);
-
-		// var domainArray = new Array();
-		if (endsWith(item.type, "domain")){
-			domainArray.push(item);
-		}
-        // transmemDomainArray = new Array();
-        else if (item.type == "transmembrane") {
-        	transmemDomainArray.push(item);
-        }
-		// extramemDomainArray = new Array();
-		else if (item.type == "extramembrane") {
-			extramemDomainArray.push(item);
-		}
-		// intramemDomainArray = new Array();
-		else if (item.type == "intramembrane") {
-			intramemDomainArray.push(item);
-		}
-		// var regionArray = new Array();
-		else if (endsWith(item.type, "region") && item.type != "mature_protein_region"){
-			regionArray.push(item);
-		}		
-		// var secondaryStrucArray = new Array();
-		else if(item.type == "alpha_helix" || item.type == "beta_strand" || item.type == "turn" || item.type == "coiled_coil"){
-			secondaryStrucArray.push(item);
-		}
-		// var variantArray = new Array();
-		else if(endsWith(item.type, "variant_site")) {
-			variantArray.push(item);
-		}
-		// var bindingArray = new Array();
-		else if (item.type == "metal_contact" || item.type == "binding_motif") {
-			bindingArray.push(item);
-		}
-		// var residueArray = new Array();
-		else if (endsWith(item.type, "residue")) {
-			residueArray.push(item);
-		}
-		// var peptideArray = new Array();
-		else if (endsWith(item.type, "_peptide")) {
-			peptideArray.push(item);
-		}
-		else {
-			item.other = true;
-			others.push(item);
-
-		}
+		addToArrayByType(item);
+		
 	}
 
 
@@ -378,6 +362,53 @@ function displayRegionInfo(event, regionTextId, show){
 	}
 }
 
+function addToArrayByType(item) {
+	// var domainArray = new Array();
+	if (endsWith(item.type, "domain")){
+		domainArray.push(item);
+	}
+    // transmemDomainArray = new Array();
+    else if (item.type == "transmembrane") {
+    	transmemDomainArray.push(item);
+    }
+	// extramemDomainArray = new Array();
+	else if (item.type == "extramembrane") {
+		extramemDomainArray.push(item);
+	}
+	// intramemDomainArray = new Array();
+	else if (item.type == "intramembrane") {
+		intramemDomainArray.push(item);
+	}
+	// var regionArray = new Array();
+	else if (endsWith(item.type, "region") && item.type != "mature_protein_region"){
+		regionArray.push(item);
+	}		
+	// var secondaryStrucArray = new Array();
+	else if(item.type == "alpha_helix" || item.type == "beta_strand" || item.type == "turn" || item.type == "coiled_coil"){
+		secondaryStrucArray.push(item);
+	}
+	// var variantArray = new Array();
+	else if(endsWith(item.type, "variant_site")) {
+		variantArray.push(item);
+	}
+	// var bindingArray = new Array();
+	else if (item.type == "metal_contact" || item.type == "binding_motif") {
+		bindingArray.push(item);
+	}
+	// var residueArray = new Array();
+	else if (endsWith(item.type, "residue")) {
+		residueArray.push(item);
+	}
+	// var peptideArray = new Array();
+	else if (endsWith(item.type, "_peptide")) {
+		peptideArray.push(item);
+	}
+	else {
+		item.other = true;
+		others.push(item);
+	}
+}
+
 /******************************************************************************************
 Checkbox functions                                                                        *
 *******************************************************************************************/
@@ -518,8 +549,8 @@ $("#add").click(function(){
 		info: addInfoArray,
 		other: false
 	};
-	console.log(addItem);
 	itemsArray.push(addItem);
+	addToArrayByType(addItem);
 	itemsNum++;
 	drawItem(addItem);
 });
@@ -531,30 +562,32 @@ function drawItem(item) {
 		|| endsWith(item.type, "residue")) {
 		var thisItem = item;
 		var starLocation = thisItem.iStart*(svgWidth/end);
-		var circle_y = svgBoxHeight/2+5;
+		var circle_y = svgBoxHeight/2+5 + 30;
 		var text_y = circle_y+5;
 		var svgId = thisItem.lineId+"svg";
 		var textId = thisItem.lineId+ "text";
 		if (endsWith(thisItem.type, "variant_site")) {
-			var site = makeSVG('circle', {cx: starLocation, cy: circle_y, r: 7.5, id: svgId, "class": "variant"});
+			var site = makeSVG('circle', {cx: starLocation, cy: circle_y, r: 7.5, id: svgId, "class": "variant", stroke: "#FF00FF"});
 			document.getElementById('diagram').appendChild(site);
 			var siteText = makeSVGText('text', {x: starLocation, y: text_y, "font-family": "sans-serif", "font-size": 13, fill: "white", "text-anchor": "middle", id: textId, "class": "variantText"}, "V");
 			document.getElementById('diagram').appendChild(siteText);
 		}
 		if (thisItem.type == "metal_contact" || thisItem.type == "binding_motif") {
-			var site = makeSVG('circle', {cx: starLocation, cy: circle_y, r: 7.5, id: svgId,  "class": "binding"});
+			var site = makeSVG('circle', {cx: starLocation, cy: circle_y, r: 7.5, id: svgId,  "class": "binding", stroke: "#FF00FF"});
 			document.getElementById('diagram').appendChild(site);
 			var siteText = makeSVGText('text', {x: starLocation, y: text_y, "font-family": "sans-serif", "font-size": 13, fill: "white", "text-anchor": "middle", id: textId, "class": "bindingText"}, "#");
 			document.getElementById('diagram').appendChild(siteText);
 		}
 		if (endsWith(thisItem.type, "residue")) {
-			var site = makeSVG('circle', {cx: starLocation, cy: circle_y, r: 7.5, id: svgId, "class": "residue"});
+			var site = makeSVG('circle', {cx: starLocation, cy: circle_y, r: 7.5, id: svgId, "class": "residue", stroke: "#FF00FF"});
 			document.getElementById('diagram').appendChild(site);
 			var siteText = makeSVGText('text', {x: starLocation, y: text_y, "font-family": "sans-serif", "font-size": 13, fill: "white", "text-anchor": "middle", id: textId, "class": "residueText"}, "@");
 			document.getElementById('diagram').appendChild(siteText);
 		}
 
 	}
+
+	//If item.type == regions or dominant
 }
 
 /******************************************************************************************
@@ -577,7 +610,7 @@ function viewSVG(){
 function downloadGff(filename) {
 	var text = generateGff();
     var pom = document.createElement('a');
-    pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    pom.setAttribute('href', 'data:gff/plain;charset=utf-8,' + encodeURIComponent(text));
     pom.setAttribute('download', filename);
     pom.click();
 }
@@ -614,6 +647,46 @@ function pushToGffArray(array, gffArray) {
 
 
 //$("#exportSVG").click(viewSVG());
+
+
+/******************************************************************************************
+Upload Local Gff File                                                                     *
+*******************************************************************************************/
+
+function handleFileSelect(evt) {
+	var files = evt.target.files;
+	var output = [];
+
+	if (files.length > 1) {
+		window.alert("You can only upload one file.");
+	}
+
+	else {
+
+		if (!document.getElementById('localfile').value.match(/gff$/)) {
+			window.alert("Invalid file type.");
+		}
+
+		else {
+
+			output.push('<li> <strong>', escape(files[0].name), '</strong> (', files[0].type || 'n/a', ') - ', 
+					files[0].size, ' bytes, last modified: ',
+					files[0].lastModifiedDate ? files[0].lastModifiedDate.toLocaleDateString(): 'n/a', '</li>');
+
+			document.getElementById('fileList').innerHTML = '<ul>' + output.join('') + '</ul>';
+
+			var reader = new FileReader();
+			reader.onload = (function(e) {
+				process(reader.result);
+			});
+			reader.readAsText(files[0]);
+			
+		}
+		
+
+
+	}
+}
 
 
 /******************************************************************************************
