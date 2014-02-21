@@ -1,17 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Protein Structure Interactive Diagram</title>
-<link rel="stylesheet" type="text/css" href="bootstrap.css">
+<title>ProDraw | Protein Structure Interactive Diagram</title>
 <link rel="stylesheet" type="text/css" href="stylesheet.css">
+<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" media="screen" href="bootstrap-select.css">
+<link rel="stylesheet" type="text/css" media="screen" href="scrollYou.css">
+<link rel="stylesheet" type="text/css" href="bootstrap.css">
+
 </head>
 <body id = "main">
 	<!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron" >
       <div class="container" >
-        <h2>Welcome to Interactive Protein Diagram</h2>
-        <p id = "intro">This is a program used to dynamically show the components of a queried protein. User should provide a UniProt Identifier, a gff2 file URL, or upload a gff2 from local computer (still in implementing). </p>
-        <p><a class="btn btn-primary btn-lg" role="button">Learn more &raquo;</a></p>
+        <h2>Welcome to ProDraw!</h2>
+        <p class="intro">ProDraw is a handy tool used to generate 2D SVG diagram to represent sequence information. You can input your sequence in 3 ways: </p>
+        <ul class="intro">
+            <li>UniProt Identifier (e.g. P09488)</li>
+            <li>UniProt GFF URL (see <a href = "http://www.ebi.ac.uk/Tools/dbfetch/dbfetch/uniprotkb">http://www.ebi.ac.uk/Tools/dbfetch/dbfetch/uniprotkb</a> for more information)</li>
+            <li>Upload from your local directory (gff file)</li>
+        </ul>
+        <p class="intro">ProDraw is compatible with sequence ontology term. Different type of sequence or site can be displayed in the diagram including: polypeptide domain, polypeptide region, secondary structure, variant site, binding site, and special residues. </p>
+        <p class="intro">Except interpreting the input files, ProDraw also allows you to customize your own diagram by adding sites or regions for your own purpose. Both the SVG diagram and the gff file can be exported after editing. </p>
+        <p class="intro">ProDraw is still in test, so welcome to report any inconvenience or error to jx7dg@virginia.edu.</p>
+        <button class="btn btn-primary btn-large" id="start">Get Started</button>
       </div>
     </div>
 <div id="upper">
@@ -22,7 +34,10 @@
 	<i>gff</i> URL:
 	<input type="text" id="URL" class="span2" style="width: 300px;">
 	&nbsp;&nbsp;&nbsp;&nbsp;
-	<input type="submit" value="Draw" id="draw" class="btn"> </br>
+	<input type="submit" value="Draw" id="draw" class="btn"> 
+    <button id="exportSVG" class="btn"> View SVG </button>
+
+<button id="exportGFF" class="btn"> Export .gff File </button> <br>
 </br>
 	Upload gff file from local computer: <input type="file" id="localfile" name="files[]" size="40" multiple />
     <output id="fileList"> </output>
@@ -33,35 +48,98 @@
 
 	<rect x="0" y="55" width="800" height="40" class="viewbox"/>
 </svg>
-<button id="exportSVG" class="btn"> View SVG </button>
-
-<button id="exportGFF" class="btn"> Export .gff2 File </button> </br>
+ 
 
 </div> <!-- endo f svg -->
 </div> <!-- End of Upper -->
 
 <div id="displayOption">
 <div id="left" class="controls">
-	<div id="leftUpper" > 		
+	<div id="leftUpper" > 
+        <label class="checkbox">
+            <select id="domainColorSelect" class="selectColor">
+                <option value="pink" style="background-color: pink" selected>Pink</option>
+                <option value="#FF0000" style="background-color: #FF0000">Red</option>
+                <option value="#00FF00" style="background-color: #00FF00">Green</option>
+                <option value="#0000FF" style="background-color: #0000FF">Blue</option>
+                <option value="#FFFF00" style="background-color: #FFFF00">Yellow</option>
+                <option value="#FF00FF" style="background-color: #FF00FF">Magenta</option> 
+            </select> 
+            <input type="checkbox" value="upOption1" id="domainCheckbox"> Show All Domain
+        </label>
+        <label class="checkbox">
+            <select id="regionColorSelect" class="selectColor">
+                <option value="#FF6600" style="background-color: #FF6600" selected>Orange</option>
+                <option value="#FF0000" style="background-color: #FF0000">Red</option>
+                <option value="#00FF00" style="background-color: #00FF00">Green</option>
+                <option value="#0000FF" style="background-color: #0000FF">Blue</option>
+                <option value="#FFFF00" style="background-color: #FFFF00">Yellow</option>
+                <option value="#FF00FF" style="background-color: #FF00FF">Magenta</option> 
+            </select> 
+            <input type="checkbox" value="upOption2" id="regionCheckbox"> Show All Polypeptide Region
+        </label>		
 	</div>
 	<div id = "leftLower" >
+
+
     	<label class="checkbox">
+            <select id="transColorSelect" class="selectColor">
+                <option value="#000000" style="background-color: #000000">Black</option>
+                <option value="#FF0000" style="background-color: #FF0000" selected>Red</option>
+                <option value="#00FF00" style="background-color: #00FF00">Green</option>
+                <option value="#0000FF" style="background-color: #0000FF">Blue</option>
+                <option value="#FFFF00" style="background-color: #FFFF00">Yellow</option>
+                <option value="#FF00FF" style="background-color: #FF00FF">Magenta</option> 
+            </select> 
             <input type="checkbox" value="lowOption1" id="transmemCheckbox"> Transmembrane Domain
         </label>
         <label class="checkbox">
+            <select id="extraColorSelect" class="selectColor">
+                <option value="#000000" style="background-color: #000000">Black</option>
+                <option value="#FF0000" style="background-color: #FF0000">Red</option>
+                <option value="#00FF00" style="background-color: #00FF00" selected>Green</option>
+                <option value="#0000FF" style="background-color: #0000FF">Blue</option>
+                <option value="#FFFF00" style="background-color: #FFFF00">Yellow</option>
+                <option value="#FF00FF" style="background-color: #FF00FF">Magenta</option> 
+            </select> 
             <input type="checkbox" value="lowOption2" id="extramemCheckbox"> Extramembrane Domain
         </label>
         <label class="checkbox">
+            <select id="intraColorSelect" class="selectColor">
+                <option value="#000000" style="background-color: #000000">Black</option>
+                <option value="#FF0000" style="background-color: #FF0000">Red</option>
+                <option value="#00FF00" style="background-color: #00FF00">Green</option>
+                <option value="#0000FF" style="background-color: #0000FF" selected>Blue</option>
+                <option value="#FFFF00" style="background-color: #FFFF00">Yellow</option>
+                <option value="#FF00FF" style="background-color: #FF00FF">Magenta</option> 
+            </select> 
             <input type="checkbox" value="lowOption3" id="intramemCheckbox"> Intramembrane Domain
         </label>
         <label class="checkbox">
+            <select id="secondColorSelect" class="selectColor">
+                <option value="#000000" style="background-color: #000000">Black</option>
+                <option value="#FF0000" style="background-color: #FF0000">Red</option>
+                <option value="#00FF00" style="background-color: #00FF00">Green</option>
+                <option value="#0000FF" style="background-color: #0000FF">Blue</option>
+                <option value="#FFFF00" style="background-color: #FFFF00" selected>Yellow</option>
+                <option value="#FF00FF" style="background-color: #FF00FF">Magenta</option> 
+            </select> 
             <input type="checkbox" value="lowOption4" id="secondaryCheckbox"> Secondary Structure
         </label>
         <label class="checkbox">
+            <select id="peptideColorSelect" class="selectColor">
+                <option value="#000000" style="background-color: #000000">Black</option>
+                <option value="#FF0000" style="background-color: #FF0000">Red</option>
+                <option value="#00FF00" style="background-color: #00FF00">Green</option>
+                <option value="#0000FF" style="background-color: #0000FF">Blue</option>
+                <option value="#FFFF00" style="background-color: #FFFF00">Yellow</option>
+                <option value="#FF00FF" style="background-color: #FF00FF" selected>Magenta</option> 
+            </select> 
             <input type="checkbox" value="lowOption8" id="peptideCheckbox"> Special Peptide
-        </label>    
+        </label> 
+              
         <label class="checkbox">
-        	<select class="selectpicker" id="variantSelector">
+        	<select class="select" id="variantSelector">
     			<option>&nbsp;V&nbsp;</option>
     			<option>&nbsp;#&nbsp;</option>
     			<option>&nbsp;@&nbsp;</option>
@@ -73,8 +151,8 @@
   			</select>
             <input type="checkbox" value="lowOption5" id="variantCheckbox"> Variant Site
         </label>
-        <label class="checkbox" id="bindingSelector">
-        	<select class="selectpicker">
+        <label class="checkbox" >
+        	<select class="select" id="bindingSelector">
     			<option>&nbsp;#&nbsp;</option>
     			<option>&nbsp;V&nbsp;</option>
     			<option>&nbsp;@&nbsp;</option>
@@ -87,7 +165,7 @@
             <input type="checkbox" value="lowOption6" id="bindingCheckbox"> Binding Site
         </label>
         <label class="checkbox">
-        	<select class="selectpicker" id="residueSelector">
+        	<select class="select" id="residueSelector">
     			<option>&nbsp;@&nbsp;</option>
     			<option>&nbsp;#&nbsp;</option>
     			<option>&nbsp;V&nbsp;</option>
@@ -109,8 +187,52 @@
 
 <div id="addForm">
 
-  	Type:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  	<input type="text" class="span2" id = "addType" placeholder="polypeptide_region"></br>
+	Type:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<!--  	<select>
+        <option value = "polypeptide_region">Polypeptide Region</option>
+        <option value = "transmembrane_domain">Transmembrane Domain</option>
+        <option value = "extramembrane_domain">Extramembrane Domain</option>
+        <option value = "intramembrane_domain">Intramembrane Domain</option>
+        <option value = "alpha_helix">Alpha Helix</option>
+        <option value = "beta_strand">Beta Strand</option>
+        <option value = "turn">Turn</option>
+        <option value = "variant_site">Variant Site</option>
+        <option value = "metal_contact">Metal Contact</option>
+        <option value = "binding_motif">Binding Mofit</option>
+        <option value = "residue">Residue</option>
+        <option value = "peptide">Peptide</option>
+
+    </select> <br> -->
+<select class="selectpicker" id = "addType">
+    <optgroup label="Region">
+        <option value = "polypeptide_region">Polypeptide Region</option>
+    </optgroup>
+    <optgroup label="Membrane Domain">
+        <option value = "transmembrane_domain">Transmembrane Domain</option>
+        <option value = "extramembrane_domain">Extramembrane Domain</option>
+        <option value = "intramembrane_domain">Intramembrane Domain</option>
+    </optgroup>
+    <optgroup label="Secondary Structure">
+        <option value = "alpha_helix">Alpha Helix</option>
+        <option value = "beta_strand">Beta Strand</option>
+        <option value = "turn">Turn</option>
+    </optgroup>
+    <optgroup label="Variant Site">
+        <option value = "natural_variant_site">Natural Variant Site</option>
+        <option value = "mutated_variant_site">Mutated Variant Site</option>
+        <option value = "other_variant_site">Other Variant Site</option>
+    </optgroup>
+    <optgroup label="Binding Site">
+        <option value = "metal_contact">Metal Contact</option>
+        <option value = "binding_motif">Binding Mofit</option>
+    </optgroup>
+
+    <optgroup label="Other">
+        <option value = "residue">Residue</option>
+        <option value = "peptide">Peptide</option>
+    </optgroup>
+</select>
+</br>
 </br>
   	Start Position: <input type="text" class="span2" id="addStart" placeholder=""></br>
 </br>
@@ -127,9 +249,23 @@
 </div>
 
 </body>
+
 <script src="jquery-1.10.2.js"> </script>
 <script src="itemType.js"></script>
-
+<script src="FileSaver.js"></script>
 <script src="functions.js"></script>
+<script>
+    // $(document).ready(function() {
+    //     $("#exportGFF").click(function() {
+        
+    //     var text = generateGff();
+    //     var blob = new Blob([text], {type: "text/plain;charset=utf-8"});
+    //     saveAs(blob, $("#identifier").val() + ".gff");
+    //     // downloadGff(identifier+'Export.gff');
+    //     // console.log(identifier);
+    //     });
+
+    // });
+</script>
 
 </html>
