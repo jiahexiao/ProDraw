@@ -50,12 +50,55 @@ $(document).ready(function() {
 	});
 
 	$("#exportGFF").click(function() {
-		console.log("hello");
+		
+
 		downloadGff(identifier+'Export.gff');
+		console.log(identifier);
 	});
 
 	$("#exportSVG").click(function() {
 		viewSVG();
+	});
+
+	$("#start").click( function ()
+	{
+    var $this = $(this),
+        index = $("#start").index(this);
+
+    $(window).scrollTop($("#upper").eq(index).offset().top);
+	});
+
+	//*********************************
+	//Change color of selector element*
+	//*********************************
+	$("#secondColorSelect").change(function() {
+		var thisColor = $(this).val();
+		$(".secondaryStructure").css("fill", thisColor);
+	});
+	$("#transColorSelect").change(function() {
+		var thisColor = $(this).val();
+		$(".transmembrane").css("fill", thisColor);
+	});
+	$("#extraColorSelect").change(function() {
+		var thisColor = $(this).val();
+		$(".extramembrane").css("fill", thisColor);
+	});
+	$("#intraColorSelect").change(function() {
+		var thisColor = $(this).val();
+		$(".intramembrane").css("fill", thisColor);
+	});
+	$("#peptideColorSelect").change(function() {
+		var thisColor = $(this).val();
+		$(".peptide").css("fill", thisColor);
+	});
+	$("#domainColorSelect").change(function() {
+		var thisColor = $(this).val();
+		$(".domain").css("fill", thisColor);
+	});
+
+	$("#regionColorSelect").change(function() {
+		var thisColor = $(this).val();
+		$(".region").css("fill", thisColor);
 	});
 });
 // $(document).on('click', '#draw', function() {
@@ -72,15 +115,17 @@ $(document).ready(function() {
 
 
 function process(result) {
+		console.log(result);
 		loadGff(result);
+
 		drawCoordinate(start, end);
 		drawDomain(domainArray);
 		drawDomainText(domainArray);
 
 
 		//update placeholder in add
-		$("#addStart").attr("placeholder", "0 - " + end);
-		$("#endStart").attr("placeholder", "0 - " + end);
+		$("#addStart").attr("placeholder", "1 - " + end);
+		$("#addEnd").attr("placeholder", "1 - " + end);
 
 		if (variantArray.length != 0){
 			drawSite(variantArray);
@@ -121,9 +166,10 @@ function process(result) {
 		//End of load hide domain text
 }
 function loadGff(result) {
-	console.log("hello from loadGff");
+	console.log(result);
     line = result.split("\n");
 
+    //console.log(line[4]);
     var startRead = 0;
     while (line[startRead][0] == "#" || line[startRead] == "") {
     	startRead++;
@@ -134,12 +180,13 @@ function loadGff(result) {
 	id = line[3].split(" ")[1];
 	start = line[3].split(" ")[2];
 	end = line[3].split(" ")[3];
-
+	identifier = id;
 
 	//itemsArray contains all the items in file
 	for (var i = startRead; i < line.length-1; i++) {
 		//Make info (Note and Link) into array
 		var infoArray = new Array();
+		//console.log(line[i].split("\t")[7]);
 		if (line[i].split("\t")[8]) {
 			var infoItemArray = line[i].split("\t")[8].split(";");
 			for (var j = 0; j<infoItemArray.length; j++) {
@@ -211,6 +258,8 @@ function drawCoordinate(start, end) {
 function drawDomain(itemsArray) {
 	for (var i =0; i < itemsArray.length; i++) {
 		var thisItem = itemsArray[i];
+		console.log(thisItem.type == "polypeptide_domain");
+
 		var domainStart = thisItem.iStart*(svgWidth/end);
 		var domainEnd = thisItem.iEnd*(svgWidth/end);
 		var domainWidth=domainEnd-domainStart;
@@ -231,6 +280,7 @@ function drawDomainText(itemsArray) {
 		var domainEnd = thisItem.iEnd*(svgWidth/end);
 		var textId = thisItem.lineId+"text";
 		var domainName;
+		console.log(thisItem.info[0].content);
 		if (thisItem.info[0]) {
 			domainName = thisItem.info[0].content;
 		}
@@ -299,6 +349,7 @@ function drawRegion(array) {
 		}
 	}
 }
+
 
 function showRegionText(itemsArray) {
 	for (var i = 0; i< itemsArray.length; i++) {
@@ -412,6 +463,16 @@ function addToArrayByType(item) {
 /******************************************************************************************
 Checkbox functions                                                                        *
 *******************************************************************************************/
+
+
+$('#domainCheckbox').click(function () {
+	$(".domain").toggle($(this).checked);
+});
+
+$('#regionCheckbox').click(function () {
+	$(".region").toggle(this.ckecked);
+});
+
 $('#transmemCheckbox').click(function () {
 	if ($(".transmembrane").length != 0){
 		$(".transmembrane").toggle(this.checked);
@@ -420,7 +481,7 @@ $('#transmemCheckbox').click(function () {
 	}
     else {
     	if (this.checked) {
-    		$("#viewInfo").append('<span class="alert"> There is no transmembrane domain in this query.</span></br>');
+    		$("#viewInfo").append('<span class="alertMessage"> There is no transmembrane domain in this query.</span></br>');
     	}
     	
     }
@@ -433,7 +494,7 @@ $('#extramemCheckbox').click(function () {
 	}
     else {
     	if (this.checked) {
-    		$("#viewInfo").append('<span class="alert"> There is no extramembrane domain in this query.</span></br>');
+    		$("#viewInfo").append('<span class="alertMessage"> There is no extramembrane domain in this query.</span></br>');
     	}
     }    
 });
@@ -445,7 +506,7 @@ $('#intramemCheckbox').click(function () {
 	}
     else {
     	if (this.checked) {
-    		$("#viewInfo").append('<span class="alert"> There is no intramembrane domain in this query.</span></br>');
+    		$("#viewInfo").append('<span class="alertMessage"> There is no intramembrane domain in this query.</span></br>');
     	}
     }
 });
@@ -458,7 +519,7 @@ $('#secondaryCheckbox').click(function() {
 	}
     else {
     	if (this.checked) {
-    		$("#viewInfo").append('<span class="alert"> There is no secondary structure in this query.</span></br>');
+    		$("#viewInfo").append('<span class="alertMessage"> There is no secondary structure in this query.</span></br>');
     	}
     }
 });
@@ -470,7 +531,7 @@ $('#peptideCheckbox').click(function() {
 	}
     else {
     	if (this.checked) {
-	    	$("#viewInfo").append('<span class="alert"> There is no special peptide structure in this query.</span></br>');
+	    	$("#viewInfo").append('<span class="alertMessage"> There is no special peptide structure in this query.</span></br>');
     	}
     }
 });
@@ -486,14 +547,14 @@ $('#variantCheckbox').click(function() {
 	}
     else {
     	if (this.checked) {
-	    	$("#viewInfo").append('<span class="alert"> There is no variant site in this query.</span></br>');
+	    	$("#viewInfo").append('<span class="alertMessage"> There is no variant site in this query.</span></br>');
     	}
     }
 });
 
 $('#bindingCheckbox').click(function() {
 	if ($(".binding").length != 0){
-		var marker = $("#variantSelector").val();
+		var marker = $("#bindingSelector").val();
 		$(".variantText").text(String(marker).trim());
 		$(".binding").toggle(this.checked);
 		$(".bindingText").toggle(this.checked);
@@ -502,7 +563,7 @@ $('#bindingCheckbox').click(function() {
 	}
     else {
     	if (this.checked) {
-	    	$("#viewInfo").append('<span class="alert"> There is no binding site in this query.</span></br>');
+	    	$("#viewInfo").append('<span class="alertMessage"> There is no binding site in this query.</span></br>');
     	}
     }
 });
@@ -518,7 +579,7 @@ $('#residueCheckbox').click(function() {
 	}
     else {
     	if (this.checked) {
-	    	$("#viewInfo").append('<span class="alert"> There is no special residue in this query.</span></br>');
+	    	$("#viewInfo").append('<span class="alertMessage"> There is no special residue in this query.</span></br>');
     	}
     }
 });
@@ -587,6 +648,15 @@ function drawItem(item) {
 
 	}
 
+	else {
+		var newItem = new Array();
+		newItem.push(item);
+		drawRegion(newItem);
+		showRegionText(newItem);
+
+
+	}
+
 	//If item.type == regions or dominant
 }
 
@@ -612,11 +682,12 @@ function downloadGff(filename) {
     var pom = document.createElement('a');
     pom.setAttribute('href', 'data:gff/plain;charset=utf-8,' + encodeURIComponent(text));
     pom.setAttribute('download', filename);
+    console.log(filename);
     pom.click();
 }
 
 function generateGff() {
-	var idLine = "##sequence-retion " + identifier + " " + start + " " + end; 
+	var idLine = "##sequence-region " + identifier + " " + start + " " + end; 
 	var gffArray = 
    ['##gff-version 2',
     '##Type Protein',
@@ -632,13 +703,14 @@ function generateGff() {
 function pushToGffArray(array, gffArray) {
 	for (var i = 0; i < array.length; i++) {
 		if (!array[i].other) {
+			var itemsString;
 			if (array[i].info.length != 0){
-				var itemsString = identifier + "\tUniProtKB" + "\t"+array[i].type + "\t" + 
-   				array[i].iStart + "\t" + array[i].iEnd + "\t.\t.\t" + array[i].info[0].type+ " \"" + array[i].info[0].content + "\"";
+				itemsString = identifier + "\tUniProtKB" + "\t"+array[i].type + "\t" + 
+   				array[i].iStart + "\t" + array[i].iEnd + "\t.\t.\t.\t" + array[i].info[0].type+ " \"" + array[i].info[0].content + "\"";
 			}
 			else {
-				var itemsString = identifier + "\tUniProtKB" + "\t"+array[i].type + "\t" + 
-   				array[i].iStart + "\t" + array[i].iEnd + "\t.\t.\t";
+				itemsString = identifier + "\tUniProtKB" + "\t"+array[i].type + "\t" + 
+   				array[i].iStart + "\t" + array[i].iEnd + "\t.\t.\t.\t";
 			}
 			gffArray.push(itemsString);
 		}
@@ -677,9 +749,11 @@ function handleFileSelect(evt) {
 
 			var reader = new FileReader();
 			reader.onload = (function(e) {
+				
 				process(reader.result);
 			});
 			reader.readAsText(files[0]);
+
 			
 		}
 		
@@ -748,6 +822,8 @@ function displayInfoOnRight (array) {
 
 	}
 }
+
+
 
 
 
