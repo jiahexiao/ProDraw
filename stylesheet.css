@@ -5,9 +5,13 @@
 
 }
 
-#intro {
+.intro {
 	font-size: 18px;
-	width: 1100px;
+	width: 100%;
+}
+.container {
+	width: 90%;
+	padding: 10px;
 }
 .viewbox{
 	stroke: black;
@@ -42,7 +46,7 @@
 }
 
 .region{
-	fill: #CCFF66;
+	fill: #FF6600;
 }
 
 .domainText{
@@ -56,23 +60,23 @@
 }
 
 .transmembrane {
-	fill: #660066;
+	fill: red;
 }
 
 .extramembrane {
-	fill: #6600CC;
+	fill: #00FF00;
 }
 
 .intramembrane {
-	fill: #3366FF;
+	fill: #0000FF;
 }
 
 .secondaryStructure{
-	fill: #9966FF;
+	fill: #FFFF00;
 }
 
 .peptide {
-	fill: yellow;
+	fill: #FF00FF;
 }
 
 .variant {
@@ -86,7 +90,7 @@
 	fill: #003366;
 }
 
-.alert {
+.alertMessage {
 	color : red;
 	font-family: sans-serif;
 	font-size: 17;
@@ -149,6 +153,17 @@
 .endDiv {
 	clear: both;
 }
+
+.select {
+	width: 50px;
+}
+
+.selectColor {
+	width: 80px;
+}
+
+
+
 
 
 
