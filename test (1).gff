@@ -1,0 +1,37 @@
+##gff-version 2
+##Type Protein
+
+##sequence-retion P09488 1 218
+P09488	UniProtKB	polypeptide_domain	2	88	.	.	Note "GST N-terminal"
+P09488	UniProtKB	polypeptide_domain	90	208	.	.	Note "GST C-terminal"
+P09488	UniProtKB	polypeptide_region	7	8	.	.	Note "Glutathione binding"
+P09488	UniProtKB	polypeptide_region	46	50	.	.	Note "Glutathione binding"
+P09488	UniProtKB	polypeptide_region	59	60	.	.	Note "Glutathione binding"
+P09488	UniProtKB	polypeptide_region	72	73	.	.	Note "Glutathione binding"
+P09488	UniProtKB	binding_motif	116	116	.	.	Note "Substrate"
+P09488	UniProtKB	natural_variant_site	173	173	.	.	Note "K -> N"
+P09488	UniProtKB	natural_variant_site	210	210	.	.	Note "S -> T"
+P09488	UniProtKB	mutated_variant_site	7	7	.	.	Note "Y -> F"
+P09488	UniProtKB	mutated_variant_site	108	108	.	.	Note "H -> Q"
+P09488	UniProtKB	mutated_variant_site	108	108	.	.	Note "H -> S"
+P09488	UniProtKB	mutated_variant_site	109	109	.	.	Note "M -> I"
+P09488	UniProtKB	mutated_variant_site	116	116	.	.	Note "Y -> A"
+P09488	UniProtKB	mutated_variant_site	116	116	.	.	Note "Y -> F"
+P09488	UniProtKB	beta_strand	3	11	.	.	
+P09488	UniProtKB	alpha_helix	12	14	.	.	
+P09488	UniProtKB	alpha_helix	15	23	.	.	
+P09488	UniProtKB	beta_strand	28	33	.	.	
+P09488	UniProtKB	turn	38	41	.	.	
+P09488	UniProtKB	alpha_helix	44	50	.	.	
+P09488	UniProtKB	beta_strand	60	65	.	.	
+P09488	UniProtKB	beta_strand	68	72	.	.	
+P09488	UniProtKB	alpha_helix	73	83	.	.	
+P09488	UniProtKB	alpha_helix	91	115	.	.	
+P09488	UniProtKB	alpha_helix	120	142	.	.	
+P09488	UniProtKB	beta_strand	146	152	.	.	
+P09488	UniProtKB	alpha_helix	156	170	.	.	
+P09488	UniProtKB	turn	172	177	.	.	
+P09488	UniProtKB	alpha_helix	179	189	.	.	
+P09488	UniProtKB	alpha_helix	192	198	.	.	
+P09488	UniProtKB	beta_strand	200	202	.	.	
+P09488	UniProtKB	beta_strand	214	216	.	.	
