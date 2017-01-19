@@ -8,16 +8,16 @@
 <link rel="stylesheet" type="text/css" href="bootstrap.css">
 <link rel="stylesheet" type="text/css" href="stylesheet.css">
 </head>
-</head>
 <body>
 <div id="main">
-	<div class="jumbotron">
+	<div class="jumbotron" id="introDiv">
+		<img src="dialog_close.ico" alt="Close" id="closeIntro">
 		<div class="container">
 		<h2>Welcome to ProDraw!</h2>
         <p class="intro">ProDraw is a handy tool used to generate 2D SVG diagram to represent sequence information. You can input your sequence in 3 ways: </p>
         <ul class="intro">
             <li>UniProt Identifier (e.g. P09488)</li>
-            <li>UniProt GFF URL (see <a href = "http://www.ebi.ac.uk/Tools/dbfetch/dbfetch/uniprotkb">http://www.ebi.ac.uk/Tools/dbfetch/dbfetch/uniprotkb</a> for more information)</li>
+            <li>UniProt GFF URL (see <a target="_tab" href = "http://www.ebi.ac.uk/Tools/dbfetch/dbfetch/uniprotkb">http://www.ebi.ac.uk/Tools/dbfetch/dbfetch/uniprotkb</a> for more information)</li>
             <li>Upload from your local directory (gff file)</li>
         </ul>
         <p class="intro">ProDraw is compatible with sequence ontology term. Different type of sequence or site can be displayed in the diagram including: polypeptide domain, polypeptide region, secondary structure, variant site, binding site, and special residues. </p>
@@ -30,48 +30,49 @@
 		<div class="container">
 			<div id = "search_box" class="navbar-form pull-left">
 				<legend id="legend1">Draw From UniProt</legend>
-				UniProt Identifier: 
-				<input type="text" id="identifier" class="span2" maxlength="6" placeholder="P09488">
+				Session: 
+				<input type="text" id="identifier" class="span2" placeholder="P09488/gstm1_human">
 				
 				<i>gff</i> URL:
 				<input type="text" id="URL" class="span2" style="width: 250px;">
 				
+				<input type="button" value="Clear&nbsp;" id="clear1" class="btn">
 				<input type="button" value="Draw&nbsp;" id="draw" class="btn">
+
 
 				<legend id="legend2">Draw From Local File</legend> 
 				Upload gff file: <input type="file" id="localfile" name="files[]" class="hidden"/>
+				<input type="button" value="Clear&nbsp;" id="clear2" class="btn">
     			<label id="select" for="localfile" class="btn">Select</label>
 		    	<output id="fileList"> </output>
 
 		    	<legend id="legend3">Insert Variant/Region</legend>
 		    	Type: 
 		    	<select class="selectpicker" id = "addType">
-				    <optgroup label="Region">
+				    <optgroup label="Domain/Region">
 				        <option value = "polypeptide_region">Polypeptide Region</option>
+				        <option value = "polypeptide_repeat">Polypeptide Repeat</option>
 				    </optgroup>
-				    <optgroup label="Membrane Domain">
-				        <option value = "transmembrane_domain">Transmembrane Domain</option>
-				        <option value = "extramembrane_domain">Extramembrane Domain</option>
-				        <option value = "intramembrane_domain">Intramembrane Domain</option>
-				    </optgroup>
-				    <optgroup label="Secondary Structure">
+				    <optgroup label="Structure">
+				        <option value = "transmembrane">Transmembrane Domain</option>
+				        <option value = "intramembrane">Intramembrane Domain</option>
 				        <option value = "alpha_helix">Alpha Helix</option>
 				        <option value = "beta_strand">Beta Strand</option>
 				        <option value = "turn">Turn</option>
+				        <option value = "coiled_coil">Coiled Coil</option>
 				    </optgroup>
+				 
 				    <optgroup label="Variant Site">
 				        <option value = "natural_variant_site">Natural Variant Site</option>
-				        <option value = "mutated_variant_site">Mutated Variant Site</option>
-				        <option value = "other_variant_site">Other Variant Site</option>
+				        
 				    </optgroup>
-				    <optgroup label="Binding Site">
+				    <optgroup label="Site/ Modified Sites">
 				        <option value = "metal_contact">Metal Contact</option>
 				        <option value = "binding_motif">Binding Mofit</option>
-				    </optgroup>
-
-				    <optgroup label="Other">
-				        <option value = "residue">Residue</option>
-				        <option value = "peptide">Peptide</option>
+				        <option value = "catalytic_residue">Active Residue</option>
+				        <option value = "post_translational_modification">Post-trans. Modification</option>
+				        <option value = "lipoconjugated residue">Lipidation</option>
+				        <option value = "glycosylated residue">Glycosylation</option>
 				    </optgroup>
 				</select>
 				<input type="button" value="&nbsp;Add&nbsp;&nbsp;" id="add" class="btn">
@@ -87,28 +88,187 @@
 
 
 				<legend id="legend4">Show/Hide</legend>
+					<span class="catagory">Domain/Region: </span>
 					<label class="checkbox">
-						<input type="checkbox" value="upOption1" id="domainCheckbox" checked/> Show Domain
+						<input type="checkbox" id="domainCheckbox" /> Polypeptide Domain
 					</label>
 					<label class="checkbox">
-						<input type="checkbox" value="upOption2" id="regionCheckbox" checked/> Show Polypeptide Region
+						<input type="checkbox" id="repeatCheckbox" /> 
+						<span id="repeatColorText">Polypeptide Repeat</span>
+						<select id="repeatColorSelect" class="selectColor">
+                			<option value="#FF6600" style="background-color: #FF6600" >Orange</option>
+                			<option value="#FF0000" style="background-color: #FF0000">Red</option>
+                			<option value="#79BD9A" style="background-color: #79BD9A" selected>Green</option>
+                			<option value="#8AC8EF" style="background-color: #8AC8EF">Blue</option>
+                			<option value="#FFFF00" style="background-color: #FFFF00">Yellow</option>
+                			<option value="#FF00FF" style="background-color: #FF00FF">Magenta</option>
+                			<option value="#A79AD1" style="background-color: #A79AD1">Purple</option>  
+            			</select>
+					</label>
+					<label class="checkbox">
+						<input type="checkbox" value="upOption2" id="regionCheckbox" /> 
+						<span id="regionColorText">Polypeptide Region</span>
             			<select id="regionColorSelect" class="selectColor">
                 			<option value="#FF6600" style="background-color: #FF6600" selected>Orange</option>
                 			<option value="#FF0000" style="background-color: #FF0000">Red</option>
-                			<option value="#00FF00" style="background-color: #00FF00">Green</option>
-                			<option value="#0000FF" style="background-color: #0000FF">Blue</option>
+                			<option value="#43F00C" style="background-color: #43F00C">Green</option>
+                			<option value="#8AC8EF" style="background-color: #8AC8EF">Blue</option>
                 			<option value="#FFFF00" style="background-color: #FFFF00">Yellow</option>
-                			<option value="#FF00FF" style="background-color: #FF00FF">Magenta</option> 
+                			<option value="#FF00FF" style="background-color: #FF00FF">Magenta</option>
+                			<option value="#A79AD1" style="background-color: #A79AD1">Purple</option>  
             			</select> 
             			
         			</label>
+					<br>
+					<br>
+					<span class="catagory">Structure: </span>
+					<label class="checkbox">
+        				<input type="checkbox" value="lowOption1" id="transmembraneCheckbox" /> 
+        				<span id="transmembraneColorText">Transmembrane</span>
+			            <select id="transmembraneColorSelect" class="selectColor">
+			                <option value="#000000" style="background-color: #000000">Black</option>
+			                <option value="#FA023C" style="background-color: #FA023C" selected>Red</option>
+			                <option value="#43F00C" style="background-color: #43F00C">Green</option>
+			                <option value="#8AC8EF" style="background-color: #8AC8EF">Blue</option>
+			                <option value="#FFFF00" style="background-color: #FFFF00">Yellow</option>
+			                <option value="#FF00FF" style="background-color: #FF00FF">Magenta</option>
+			                <option value="#A79AD1" style="background-color: #A79AD1">Purple</option>  
+			            </select> 
+			           
+			        </label>
+			        <label class="checkbox">
+			        	<input type="checkbox" value="lowOption3" id="intramembraneCheckbox" /> 
+			        	<span id="intramembraneColorText">Intramembrane</span>
+			            <select id="intramembraneColorSelect" class="selectColor">
+			                <option value="#000000" style="background-color: #000000">Black</option>
+			                <option value="#FF0000" style="background-color: #FF0000">Red</option>
+			                <option value="#43F00C" style="background-color: #43F00C">Green</option>
+			                <option value="#8AC8EF" style="background-color: #8AC8EF" selected>Blue</option>
+			                <option value="#FFFF00" style="background-color: #FFFF00">Yellow</option>
+			                <option value="#FF00FF" style="background-color: #FF00FF">Magenta</option>
+			                <option value="#A79AD1" style="background-color: #A79AD1">Purple</option>  
+			            </select> 
+			            
+			        </label>
+			        
+			        <label class="checkbox">
+			        	<input type="checkbox" value="lowOption4" id="coiledCheckbox" /> 
+			        	<span id="coiledColorText">Coiled coil</span>
+			        	<select id="coiledColorSelect" class="selectColor">
+			                <option value="#000000" style="background-color: #000000">Black</option>
+			                <option value="#FF0000" style="background-color: #FF0000">Red</option>
+			                <option value="#43F00C" style="background-color: #43F00C">Green</option>
+			                <option value="#8AC8EF" style="background-color: #8AC8EF" >Blue</option>
+			                <option value="#FFFF00" style="background-color: #FFFF00">Yellow</option>
+			                <option value="#FF00FF" style="background-color: #FF00FF">Magenta</option> 
+			                <option value="#A79AD1" style="background-color: #A79AD1" selected>Purple</option> 
+			            </select> 
+			        </label>
+			        <label class="checkbox">
+			        	<input type="checkbox" id="secondaryCheckbox" /> 
+			        	<span id="secondaryColorText">Secondary Structure </span>
+			        </label>
+			        <br>
+			        <br>
+			        <span class="catagory">Site: </span>
+					<label class="checkbox">
+						<input type="checkbox" id="activeCheckbox" /> 
+						<span id="activeColorText">Active Site</span>
+						<select id="activeColorSelect" class="selectColor">
+			                <option value="#FB406F" style="background-color: #FB406F" selected>Pink</option>
+			                <option value="#BF372D" style="background-color: #BF372D">Red</option>
+			                <option value="#407F43" style="background-color: #407F43">Green</option>
+			                <option value="#31DCCC" style="background-color: #31DCCC">Blue</option>
+			                <option value="#FBB728" style="background-color: #FBB728">Yellow</option>
+			                <option value="#E77DDC" style="background-color: #E77DDC">Magenta</option> 
+			            </select> 
+					</label>
+					<label class="checkbox">
+						<input type="checkbox" id="metalCheckbox" /> 
+						<span id="metalColorText">Metal Contact</span>
+						<select id="metalColorSelect" class="selectColor">
+			                <option value="#FB406F" style="background-color: #FB406F">Pink</option>
+			                <option value="#BF372D" style="background-color: #BF372D" selected>Red</option>
+			                <option value="#407F43" style="background-color: #407F43">Green</option>
+			                <option value="#31DCCC" style="background-color: #31DCCC" >Blue</option>
+			                <option value="#FBB728" style="background-color: #FBB728">Yellow</option>
+			                <option value="#E77DDC" style="background-color: #E77DDC">Magenta</option>
+			            </select> 
+					</label>
+					<label class="checkbox">
+						<input type="checkbox" id="bindingCheckbox" /> 
+						<span id="bindingColorText">binding Site</span>
+						<select id="bindingColorSelect" class="selectColor">
+			                <option value="#FB406F" style="background-color: #FB406F">Pink</option>
+			                <option value="#BF372D" style="background-color: #BF372D">Red</option>
+			                <option value="#407F43" style="background-color: #407F43" selected>Green</option>
+			                <option value="#31DCCC" style="background-color: #31DCCC" >Blue</option>
+			                <option value="#FBB728" style="background-color: #FBB728">Yellow</option>
+			                <option value="#E77DDC" style="background-color: #E77DDC">Magenta</option> 
+			            </select>
+					</label>
+					<br>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+					<label class="checkbox">
+						<input type="checkbox" id="modifiedCheckbox" /> 
+						<span id="modifiedColorText">Modified Residue</span>
+						<select id="modifiedColorSelect" class="selectColor">
+			                <option value="#FB406F" style="background-color: #FB406F">Pink</option>
+			                <option value="#BF372D" style="background-color: #BF372D">Red</option>
+			                <option value="#407F43" style="background-color: #407F43">Green</option>
+			                <option value="#31DCCC" style="background-color: #31DCCC" selected>Blue</option>
+			                <option value="#FBB728" style="background-color: #FBB728">Yellow</option>
+			                <option value="#E77DDC" style="background-color: #E77DDC">Magenta</option>
+			            </select>
+					</label>
+					<label class="checkbox">
+						<input type="checkbox" id="lipiCheckbox" /> <span id="lipiColorText">Lipidation</span>
+						<select id="lipiColorSelect" class="selectColor">
+			                <option value="#FB406F" style="background-color: #FB406F">Pink</option>
+			                <option value="#BF372D" style="background-color: #BF372D">Red</option>
+			                <option value="#407F43" style="background-color: #407F43">Green</option>
+			                <option value="#31DCCC" style="background-color: #31DCCC">Blue</option>
+			                <option value="#FBB728" style="background-color: #FBB728" selected>Yellow</option>
+			                <option value="#E77DDC" style="background-color: #E77DDC">Magenta</option>
+			            </select>
+					</label>
+					<label class="checkbox">
+						<input type="checkbox" id="glyCheckbox" /> <span id="glyColorText">Glycosylation</span>
+						<select id="glyColorSelect" class="selectColor">
+			                <option value="#FB406F" style="background-color: #FB406F">Pink</option>
+			                <option value="#BF372D" style="background-color: #BF372D">Red</option>
+			                <option value="#407F43" style="background-color: #407F43">Green</option>
+			                <option value="#31DCCC" style="background-color: #31DCCC" >Blue</option>
+			                <option value="#FBB728" style="background-color: #FBB728">Yellow</option>
+			                <option value="#E77DDC" style="background-color: #E77DDC" selected>Magenta</option>
+			            </select>
+					</label>
+					<br>
+					<br>
+			        <span class="catagory">Variation: </span>
+			        <label class="checkbox">
+			        	<input type="checkbox" value="lowOption5" id="variantCheckbox" /> 
+			        	<span id="variantColorText">Variant Site</span>
+			        	<select id="variantColorSelect" class="selectColor">
+			        		<option value="#FC6041" style="background-color: #FC6041" selected>Orange</option>
+			                <option value="#FB406F" style="background-color: #FB406F">Pink</option>
+			                <option value="#BF372D" style="background-color: #BF372D">Red</option>
+			                <option value="#407F43" style="background-color: #407F43">Green</option>
+			                <option value="#31DCCC" style="background-color: #31DCCC">Blue</option>
+			                <option value="#FBB728" style="background-color: #FBB728">Yellow</option>
+			                <option value="#E77DDC" style="background-color: #E77DDC">Magenta</option> 
+			            </select>
+			            
+			        </label>
+					<!-- 
         			<label class="checkbox">
-			        	<input type="checkbox" value="lowOption8" id="peptideCheckbox" checked/> Special Peptide
+			        	<input type="checkbox" value="lowOption8" id="peptideCheckbox" checked/> 
+			        	<span id="peptideColorText">Special Peptide</span>
 			            <select id="peptideColorSelect" class="selectColor">
 			                <option value="#000000" style="background-color: #000000">Black</option>
 			                <option value="#FF0000" style="background-color: #FF0000">Red</option>
-			                <option value="#00FF00" style="background-color: #00FF00">Green</option>
-			                <option value="#0000FF" style="background-color: #0000FF">Blue</option>
+			                <option value="#43F00C" style="background-color: #43F00C">Green</option>
+			                <option value="#8AC8EF" style="background-color: #8AC8EF">Blue</option>
 			                <option value="#FFFF00" style="background-color: #FFFF00">Yellow</option>
 			                <option value="#FF00FF" style="background-color: #FF00FF" selected>Magenta</option> 
 			            </select> 
@@ -116,88 +276,16 @@
 			        </label>
         			<br>
         			<br>
-        			<label class="checkbox">
-        				<input type="checkbox" value="lowOption1" id="transmembraneCheckbox" checked/> Transmembrane Domain
-			            <select id="transmembraneColorSelect" class="selectColor">
-			                <option value="#000000" style="background-color: #000000">Black</option>
-			                <option value="#FF0000" style="background-color: #FF0000" selected>Red</option>
-			                <option value="#00FF00" style="background-color: #00FF00">Green</option>
-			                <option value="#0000FF" style="background-color: #0000FF">Blue</option>
-			                <option value="#FFFF00" style="background-color: #FFFF00">Yellow</option>
-			                <option value="#FF00FF" style="background-color: #FF00FF">Magenta</option> 
-			            </select> 
-			           
-			        </label>
+        			
 			        <label class="checkbox">
-			        	<input type="checkbox" value="lowOption2" id="extramembraneCheckbox" checked/> Extramembrane Domain
+			        	<input type="checkbox" value="lowOption2" id="extramembraneCheckbox" checked/> 
+			        	<span id="extramembraneColorText">Extramembrane Domain</span>
 			            <select id="extramembraneColorSelect" class="selectColor">
 			                <option value="#000000" style="background-color: #000000">Black</option>
 			                <option value="#FF0000" style="background-color: #FF0000">Red</option>
-			                <option value="#00FF00" style="background-color: #00FF00" selected>Green</option>
-			                <option value="#0000FF" style="background-color: #0000FF">Blue</option>
+			                <option value="#43F00C" style="background-color: #43F00C" selected>Green</option>
+			                <option value="#8AC8EF" style="background-color: #8AC8EF">Blue</option>
 			                <option value="#FFFF00" style="background-color: #FFFF00">Yellow</option>
-			                <option value="#FF00FF" style="background-color: #FF00FF">Magenta</option> 
-			            </select> 
-			            
-			        </label>
-			        <label class="checkbox">
-			        	<input type="checkbox" value="lowOption3" id="intramembraneCheckbox" checked/> Intramembrane Domain
-			            <select id="intramembraneColorSelect" class="selectColor">
-			                <option value="#000000" style="background-color: #000000">Black</option>
-			                <option value="#FF0000" style="background-color: #FF0000">Red</option>
-			                <option value="#00FF00" style="background-color: #00FF00">Green</option>
-			                <option value="#0000FF" style="background-color: #0000FF" selected>Blue</option>
-			                <option value="#FFFF00" style="background-color: #FFFF00">Yellow</option>
-			                <option value="#FF00FF" style="background-color: #FF00FF">Magenta</option> 
-			            </select> 
-			            
-			        </label>
-			        <br>
-			        <br>
-			        <label class="checkbox">
-			        	<input type="checkbox" value="lowOption4" id="alphaCheckbox" checked/> Alpha helix
-			            <select id="alphaColorSelect" class="selectColor">
-			                <option value="#000000" style="background-color: #000000">Black</option>
-			                <option value="#FF0000" style="background-color: #FF0000">Red</option>
-			                <option value="#00FF00" style="background-color: #00FF00">Green</option>
-			                <option value="#0000FF" style="background-color: #0000FF">Blue</option>
-			                <option value="#FFDE00" style="background-color: #FFDE00" selected>Yellow</option>
-			                <option value="#FF00FF" style="background-color: #FF00FF">Magenta</option> 
-			            </select> 
-			            
-			        </label>
-			        <label class="checkbox">
-			        	<input type="checkbox" value="lowOption4" id="betaCheckbox" checked/> Beta strand
-			            <select id="betaColorSelect" class="selectColor">
-			                <option value="#000000" style="background-color: #000000">Black</option>
-			                <option value="#FF0000" style="background-color: #FF0000">Red</option>
-			                <option value="#00FF00" style="background-color: #00FF00">Green</option>
-			                <option value="#0000FF" style="background-color: #0000FF">Blue</option>
-			                <option value="#CC9900" style="background-color: #CC9900" selected>Yellow</option>
-			                <option value="#FF00FF" style="background-color: #FF00FF">Magenta</option> 
-			            </select> 
-			            
-			        </label>
-			        <label class="checkbox">
-			        	<input type="checkbox" value="lowOption4" id="turnCheckbox" checked/> Turn
-			            <select id="turnColorSelect" class="selectColor">
-			                <option value="#000000" style="background-color: #000000">Black</option>
-			                <option value="#FF0000" style="background-color: #FF0000">Red</option>
-			                <option value="#00FF00" style="background-color: #00FF00">Green</option>
-			                <option value="#0000FF" style="background-color: #0000FF">Blue</option>
-			                <option value="#FF9900" style="background-color: #FF9900" selected>Yellow</option>
-			                <option value="#FF00FF" style="background-color: #FF00FF">Magenta</option> 
-			            </select> 
-			            
-			        </label>
-			        <label class="checkbox">
-			        	<input type="checkbox" value="lowOption4" id="coiledCheckbox" checked/> Coiled coil
-			            <select id="coiledColorSelect" class="selectColor">
-			                <option value="#000000" style="background-color: #000000">Black</option>
-			                <option value="#FF0000" style="background-color: #FF0000">Red</option>
-			                <option value="#00FF00" style="background-color: #00FF00">Green</option>
-			                <option value="#0000FF" style="background-color: #0000FF">Blue</option>
-			                <option value="#FCF141" style="background-color: #FCF141" selected>Yellow</option>
 			                <option value="#FF00FF" style="background-color: #FF00FF">Magenta</option> 
 			            </select> 
 			            
@@ -206,19 +294,28 @@
 			        <br>
 			        <br>
 			        <label class="checkbox">
-			        	<input type="checkbox" value="lowOption5" id="variantCheckbox" checked> Variant Site
-			        	<select class="select" id="variantSelector">
-			    			<option>&nbsp;V&nbsp;</option>
-			    			<option>&nbsp;#&nbsp;</option>
-			    			<option>&nbsp;@&nbsp;</option>
-			    			<option>&nbsp;$&nbsp;</option>
-			    			<option>&nbsp;^&nbsp;</option>
-			    			<option>&nbsp;*&nbsp;</option>
-			    			<option>&nbsp;-&nbsp;</option>
-			    			<option>&nbsp;+&nbsp;</option>
-			  			</select>
+			        	<input type="checkbox" value="lowOption4" id="alphaCheckbox" checked/> 
+			        	<span id="alphaColorText">Alpha helix</span>
+			            
 			            
 			        </label>
+			        <label class="checkbox">
+			        	<input type="checkbox" value="lowOption4" id="betaCheckbox" checked/> 
+			        	<span id="betaColorText">Beta strand </span>
+			             
+			            
+			        </label>
+			        <label class="checkbox">
+			        	<input type="checkbox" value="lowOption4" id="turnCheckbox" checked/> 
+			        	<span id="turnColorText">Turn </span>
+			             
+			            
+			        </label>
+			        
+			        
+			        <br>
+			        <br>
+			        
 			        <label class="checkbox" >
 			        	<input type="checkbox" value="lowOption6" id="bindingCheckbox" checked/> Binding Site
 			        	<select class="select" id="bindingSelector">
@@ -246,7 +343,7 @@
 			    			<option>&nbsp;+&nbsp;</option>    			
 			  			</select>        	
 			            
-			        </label>
+			        </label> -->
 			    <input type="button" value="Apply" id="apply" class="btn">
 			</div> <!-- end of search box -->
 
@@ -257,8 +354,8 @@
 			<div class="endDiv">
 			</div>
 			
-			<div id="viewInfo" >
-				<legend id="infoLegend">
+ 			<!-- <div id="viewInfo" >
+				<legend class="infoLegend">
 					Information
 				</legend>
 				<span id="domainShowTriangle">&#9660;</span> Polypeptide Domain
@@ -306,25 +403,105 @@
 				</div>
 
 
-			</div> <!-- end of vewInfo -->
+			</div> --><!-- end of vewInfo -->  
 
 			<div id="svg" >
-				<svg id="diagram" xmlns="http://www.w3.org/2000/svg" version="1.1" height = "400" width = "800" viewBox = "0 0 800 400">
+				<svg id="diagram" xmlns="http://www.w3.org/2000/svg" version="1.1" height = "300" width = "800" viewBox = "0 0 800 300">
 
 					<rect x="0" y="55" width="800" height="40" class="viewbox"/>
 				</svg>
 				 
 
-			</div> <!-- endo f svg -->
+			</div> <!-- end of svg -->
+
+			<legend id="legend6">Information Panel</legend>
+			<div id="infoPanel">
+				<div id="domainPanel">
+					<legend class="infoLegend">
+					Domains/Regions
+					</legend>
+					<div id="domainPanelDomain">
+						<span class="panelTitle">Polypeptide Domain:</span>
+						<br>
+					</div>
+					<div id="domainPanelRegion">
+						<span class="panelTitle">Polypeptide Region:</span>
+						<br>
+					</div>
+					<div id="domainPanelRepeat">
+						<span class="panelTitle">Polypeptide Repeat:</span>
+						<br>
+					</div>
+				</div>
+
+				<div id="structurePanel">
+					<legend class="infoLegend">
+					Structure
+					</legend>
+					<div id="structurePanelIntramembrane">
+						<span class="panelTitle">Intramembrane:</span>
+						<br>
+					</div>
+					<div id="structurePanelTransmembrane">
+						<span class="panelTitle">Transmembrane:</span>
+						<br>
+					</div>
+					<div id="structurePanelSecondary">
+						<span class="panelTitle">Secondary Structure:</span>
+						<br>
+					</div>
+					<div id="structurePanelCoiled">
+						<span class="panelTitle">Coiled Coil:</span>
+						<br>
+					</div>
+
+				</div>
+				
+				<div id="sitePanel">
+					<legend class="infoLegend">
+					Sites/Modified Sites
+					</legend>
+					<div id="sitePanelActive">
+						<span class="panelTitle">Active Site:</span>
+						<br>
+					</div>
+					<div id="sitePanelMetal">
+						<span class="panelTitle">Metal Contact:</span>
+						<br>
+					</div>
+					<div id="sitePanelBinding">
+						<span class="panelTitle">Binding Site:</span>
+						<br>
+					</div>
+					<div id="sitePanelModified">
+						<span class="panelTitle">Modified Residue:</span>
+						<br>
+					</div>
+					<div id="sitePanelLipi">
+						<span class="panelTitle">Lipidation:</span>
+						<br>
+					</div>
+					<div id="sitePanelGly">
+						<span class="panelTitle">Glycosylation:</span>
+						<br>
+					</div>
+				</div>
+
+				<div id="variantPanel">
+					<legend class="infoLegend">
+					Variation
+					</legend>
+					<div id = "variantPanelvariant">
+					</div>
+				</div>
+				<div class="endDiv">
+				</div>
+			</div>
 
 			
 
 		</div> <!-- end of container2 -->
 	</div><!-- end of upper -->
-	<div id="lower">
-	</div>
-	
-
 
 <script src="jquery-1.10.2.js"> </script>
 <script src="prodraw.js"></script>

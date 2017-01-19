@@ -1,14 +1,28 @@
 #main {
-	margin: 20px 60px 20px 60px;
+	padding: 20px 60px 20px 60px;
+	width: 1280px;
+	height: 2100px;
 }
 
 .intro {
 	font-size: 18px;
 	width: 100%;
 }
+
+#closeIntro {
+	float: right;
+}
+
+#closeIntro:hover {
+	cursor: pointer;
+}
 .container {
 	width: 97%;
 
+}
+
+#identifier {
+	width: 200px;
 }
 
 
@@ -43,9 +57,21 @@
 	margin-left: 10px;
 }
 
-#infoLegend {
-	border-bottom: 2px solid #3A4C58;
-	color: #3A4C58;
+.catagory {
+	color: #532E5C;
+	font-family: "Arial Black", Gadget, sans-serif;
+}
+
+#legend6 {
+	border-bottom: 3px solid #693726;
+	margin-top: 10px;
+	margin-left: 10px;
+}
+
+.infoLegend {
+	border-bottom: 2px solid #693726;
+	color: #693726;
+	font-weight: bold;
 }
 
 #draw {
@@ -54,10 +80,25 @@
 	float: right;
 }
 
+#clear1 {
+	background-color: #FFDB59;
+	font-weight: bold;
+	float: right;
+	margin-left: 10px;
+}
+
 #select {
 	background-color: #FFF7BF;
 	font-weight: bold;
 	float: right;
+	margin-top: 5px;
+}
+
+#clear2 {
+	background-color: #FFF7BF;
+	font-weight: bold;
+	float: right;
+	margin-left: 10px;
 }
 
 #add {
@@ -93,6 +134,15 @@
 	fill: black;
 }
 
+.backGroundRuler {
+	stroke: #d3d3d3;
+	stroke-width: 1;
+
+}
+#diagram {
+	border: 1px solid #d3d3d3;
+}
+
 .viewbox{
 	stroke: black;
 	stroke-width: 2;
@@ -114,12 +164,12 @@
 	float: right;
 	width: 250px;
 	min-height: 260px;
-	max-height: 400px;
-	margin-bottom: 80px;
-	margin-top: 50px;
+	max-height: 300px;
+	margin-bottom: 20px;
+	margin-top: 20px;
 	font-family: sans-serif;
 	background-color: #BDB5AD;
-	padding: 20px;
+	padding: 10px;
 	font-size: 16;
 	font-weight: bold;
 	color: #003333;
@@ -152,6 +202,18 @@
 	fill: #FF6600;
 }
 
+.repeat{
+	fill: #79BD9A;
+}
+
+#regionColorSelect {
+	background-color: #FF6600;
+}
+
+#repeatColorSelect {
+	background-color: #79BD9A;
+}
+
 .domainText{
 	font-family: sans-serif;
 	text-anchor: middle;
@@ -163,47 +225,135 @@
 }
 
 .transmembrane {
-	fill: red;
+	fill: #FA023C;
+}
+
+#transmembraneColorSelect{
+	background-color: #FA023C;
 }
 
 .extramembrane {
-	fill: #00FF00;
+	fill: #43F00C;
+}
+
+#extramembraneColorSelect {
+	background-color: #43F00C;
 }
 
 .intramembrane {
-	fill: #0000FF;
+	fill: #8AC8EF;
+}
+
+#intramembraneColorSelect {
+	background-color: #8AC8EF;
 }
 
 .alpha{
-	fill: #FFDE00;
+	fill: #F4837F;
+}
+
+#alphaColorSelect {
+	background-color: #F4837F;
 }
 
 .beta{
-	fill: #CC9900;
+	fill: #F7E982;
+}
+
+#betaColorSelect {
+	background-color: #F7E982;
 }
 
 .turn{
-	fill: #FF9900;
+	fill: #8DDEA2;
+}
+
+#turnColorSelect {
+	background-color: #8DDEA2;
 }
 
 .coiled{
-	fill:#FCF141;
+	fill:#A79AD1;
+}
+
+#coiledColorSelect {
+	background-color: #A79AD1;
 }
 
 .peptide {
 	fill: #FF00FF;
 }
 
-.variant {
-	fill: #666666;
+#peptideColorSelect {
+	background-color: #FF00FF;
 }
 
-.binding {
-	fill: #003300;
+.catalytic_residue {
+	fill: #FB406F;
 }
-.residue {
-	fill: #003366;
+
+#activeColorSelect {
+	background-color: #FB406F;
 }
+
+.metal_contact {
+	fill: #BF372D;
+}
+
+#metalColorSelect {
+	background-color: #BF372D;
+}
+
+.binding_motif {
+	fill: #407F43;
+}
+
+#bindingColorSelect {
+	background-color: #407F43;
+}
+
+.post_translational_modification {
+	fill: #31DCCC;
+}
+
+#modifiedColorSelect {
+	background-color: #31DCCC;
+}
+
+
+.lipoconjugated_residue {
+	fill: #FBB728;
+}
+
+#lipiColorSelect {
+	background-color: #FBB728;
+}
+
+.glycosylated_residue {
+	fill: #E77DDC;
+}
+
+#glyColorSelect {
+	background-color: #E77DDC;
+}
+
+.variant {
+	fill: #FC6041;
+}
+
+#variantColorSelect {
+	background-color: #FC6041;
+}
+
+.site {
+	fill: #5A5B1B;
+}
+.modified {
+	fill: #31DCCC;
+}
+
+
+
 
 .alertMessage {
 	color : red;
@@ -218,6 +368,78 @@
 	font-family: "Arial Narrow", Arial, sans-serif;
 
 }
+
+#domainPanel {
+	float: left;
+	width: 258px;
+	height: 300px;
+	margin: 0px 10px 40px 5px;
+	background-color: #CDBB99;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 10px;
+	color: #003333;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	overflow: scroll;
+}
+
+.panelTitle {
+	color: #693726;
+	font-weight: bold;
+}
+
+#structurePanel {
+	float: left;
+	width: 258px;
+	height: 300px;
+	margin: 0px 10px 40px 5px;
+	background-color: #CDBB99;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 10px;
+	color: #003333;
+	
+	overflow-x: hidden;
+	overflow-y: hidden;
+	overflow: scroll;
+}
+
+#sitePanel {
+	float: left;
+	width: 258px;
+	height: 300px;
+	margin: 0px 10px 40px 5px;
+	background-color: #CDBB99;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 10px;
+	color: #003333;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	overflow: scroll;
+}
+
+#variantPanel {
+	float: left;
+	width: 258px;
+	height: 300px;
+	margin: 0px 10px 40px 5px;
+	background-color: #CDBB99;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 10px;
+	color: #003333;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	overflow: scroll;
+}
+
+.itemInfo {
+	white-space: nowrap;
+}
+
+
 
 
 

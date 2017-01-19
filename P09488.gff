@@ -4,8 +4,8 @@
 ##sequence-region P09488 1 218
 P09488	UniProtKB	cleaved_initiator_methionine	1	1	.	.	.	Note "Removed" ; Link "http://www.ncbi.nlm.nih.gov/pubmed/2110160" ; Link "http://www.ncbi.nlm.nih.gov/pubmed/1420361" ; Link "http://www.ncbi.nlm.nih.gov/pubmed/1846734" ; Link "http://www.ncbi.nlm.nih.gov/pubmed/7822249" ; Link "http://www.ncbi.nlm.nih.gov/pubmed/3864155" ; Link "http://www.ncbi.nlm.nih.gov/pubmed/3979555"
 P09488	UniProtKB	mature_protein_region	2	218	.	.	.	Note "Glutathione S-transferase Mu 1" ; Note "UniProtKB FT ID: PRO_0000185816"
-P09488	UniProtKB	polypeptide_domain	2	88	.	.	.	Note "GST N-terminal"
-P09488	UniProtKB	polypeptide_domain	90	208	.	.	.	Note "GST C-terminal"
+P09488	UniProtKB	polypeptide_domain	2	88	.	.	.	Note "GST N-terminal 1"
+P09488	UniProtKB	polypeptide_domain	90	208	.	.	.	Note "GST C-terminal 2"
 P09488	UniProtKB	polypeptide_region	7	8	.	.	.	Note "Glutathione binding"
 P09488	UniProtKB	polypeptide_region	46	50	.	.	.	Note "Glutathione binding"
 P09488	UniProtKB	polypeptide_region	59	60	.	.	.	Note "Glutathione binding"
@@ -39,4 +39,9 @@ P09488	UniProtKB	turn	172	177	.	.	.
 P09488	UniProtKB	alpha_helix	179	189	.	.	.	
 P09488	UniProtKB	alpha_helix	192	198	.	.	.	
 P09488	UniProtKB	beta_strand	200	202	.	.	.	
-P09488	UniProtKB	beta_strand	214	216	.	.	.	
+P09488	UniProtKB	beta_strand	214	216	.	.	.
+P09488	UniProtKB	transmembrane	3	23	.	.	.	Note "Helical; Name=1;" ; Note "Status: Potential”
+P09488	UniProtKB	intramembrane	105	125	.	.	.	Note "Helical;" ; Note "Status: Potential"
+P09488	UniProtKB	coiled_coil	60	156	.	.	.	Note "Status: Potential"
+P09488	UniProtKB	catalytic_residue	83	83	.	.	.	Note "Proton acceptor" ; Note "Status: By similarity"
+P09488	UniProtKB	lipoconjugated residue	2	2	.	.	.	Note "N-myristoyl glycine; alternate" ; Link "http://www.ncbi.nlm.nih.gov/pubmed/20213681" ; Link "http://www.ncbi.nlm.nih.gov/pubmed/23535599"
